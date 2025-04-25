@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 public class Commande {
     private List<Cupcake> cupcakes;
 
-     Commande() {
+    public Commande() {
         this.cupcakes = new ArrayList<>();
     }
 
-     boolean ajouterCupcake(Cupcake cupcake) {
+    public boolean ajouterCupcake(Cupcake cupcake) {
         if (!cupcake.estDisponible()) {
             return false;
         }
@@ -22,7 +22,7 @@ public class Commande {
         return true;
     }
 
-     double calculerTotal() {
+    public double calculerTotal() {
         if (cupcakes.isEmpty()) {
             return 0;
         }
@@ -42,12 +42,14 @@ public class Commande {
             }
         }
 
+
         if (!cupcakesNormaux.isEmpty() && nombreCupcakesGratuits > 0) {
 
             cupcakesNormaux.sort(Comparator.comparing(Cupcake::calculerPrix));
 
+
             for (int i = 0; i < nombreCupcakesGratuits; i++) {
-                cupcakesNormaux.remove(0);
+                cupcakesNormaux.remove(0); // Supprime le moins cher
             }
         }
 
@@ -59,7 +61,7 @@ public class Commande {
         return total;
     }
 
-    List<Cupcake> getCupcakes() {
+    public List<Cupcake> getCupcakes() {
         return cupcakes;
     }
 }
