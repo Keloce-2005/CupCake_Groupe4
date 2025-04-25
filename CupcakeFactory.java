@@ -6,32 +6,31 @@ import java.util.List;
 public class CupcakeFactory {
     private Menu menu;
 
-     CupcakeFactory() {
+    public CupcakeFactory() {
         this.menu = new Menu();
         initialiserIngredients();
         initialiserCupcakesDuJour();
     }
 
     private void initialiserIngredients() {
+        // Bases
+        menu.ajouterIngredient(new Ingredient("Nature", 1.5, 21, Ingredient.IngredientType.BASE));
+        menu.ajouterIngredient(new Ingredient("Chocolat", 2.0, 5, Ingredient.IngredientType.BASE));
+        menu.ajouterIngredient(new Ingredient("Fourrée", 2.5, 12, Ingredient.IngredientType.BASE));
 
-        menu.ajouterIngredient(new Ingredient("Nature", 1.5, 15, Ingredient.IngredientType.BASE));
-        menu.ajouterIngredient(new Ingredient("Chocolat", 2.0, 15, Ingredient.IngredientType.BASE));
-        menu.ajouterIngredient(new Ingredient("Fourrée", 2.5, 7, Ingredient.IngredientType.BASE));
-
-
-        menu.ajouterIngredient(new Ingredient("Vanille", 1.0, 7, Ingredient.IngredientType.CREME));
+        // Crèmes
+        menu.ajouterIngredient(new Ingredient("Vanille", 1.0, 11, Ingredient.IngredientType.CREME));
         menu.ajouterIngredient(new Ingredient("Chocolat", 1.2, 15, Ingredient.IngredientType.CREME));
-        menu.ajouterIngredient(new Ingredient("Framboise", 1.5, 70, Ingredient.IngredientType.CREME));
+        menu.ajouterIngredient(new Ingredient("Framboise", 1.5, 10, Ingredient.IngredientType.CREME));
 
-
-        menu.ajouterIngredient(new Ingredient("Pépites de chocolat", 0.8, 30, Ingredient.IngredientType.TOPPING));
-        menu.ajouterIngredient(new Ingredient("Vermicelles", 0.5, 40, Ingredient.IngredientType.TOPPING));
-        menu.ajouterIngredient(new Ingredient("Marshmallows", 1.0, 25, Ingredient.IngredientType.TOPPING));
-        menu.ajouterIngredient(new Ingredient("Cookie dought", 1.2, 20, Ingredient.IngredientType.TOPPING));
+        // Toppings
+        menu.ajouterIngredient(new Ingredient("Pépites de chocolat", 0.8, 4, Ingredient.IngredientType.TOPPING));
+        menu.ajouterIngredient(new Ingredient("Vermicelles", 0.5, 4, Ingredient.IngredientType.TOPPING));
+        menu.ajouterIngredient(new Ingredient("Marshmallows", 1.0, 5, Ingredient.IngredientType.TOPPING));
+        menu.ajouterIngredient(new Ingredient("Cookie dought", 1.2, 22, Ingredient.IngredientType.TOPPING));
     }
 
     private void initialiserCupcakesDuJour() {
-
         Cupcake cupcake1 = new Cupcake(
                 findIngredient("Chocolat", Ingredient.IngredientType.BASE),
                 findIngredient("Vanille", Ingredient.IngredientType.CREME),
@@ -40,7 +39,6 @@ public class CupcakeFactory {
         cupcake1.ajouterTopping(findIngredient("Pépites de chocolat", Ingredient.IngredientType.TOPPING));
         menu.ajouterCupcakeDuJour(cupcake1);
 
-
         Cupcake cupcake2 = new Cupcake(
                 findIngredient("Nature", Ingredient.IngredientType.BASE),
                 findIngredient("Framboise", Ingredient.IngredientType.CREME),
@@ -48,7 +46,6 @@ public class CupcakeFactory {
         );
         cupcake2.ajouterTopping(findIngredient("Marshmallows", Ingredient.IngredientType.TOPPING));
         menu.ajouterCupcakeDuJour(cupcake2);
-
 
         Cupcake cupcake3 = new Cupcake(
                 findIngredient("Fourrée", Ingredient.IngredientType.BASE),
@@ -68,11 +65,11 @@ public class CupcakeFactory {
         return null;
     }
 
-     Menu getMenu() {
+    public Menu getMenu() {
         return menu;
     }
 
-     Commande creerNouvelleCommande() {
+    public Commande creerNouvelleCommande() {
         return new Commande();
     }
 
@@ -137,7 +134,7 @@ public class CupcakeFactory {
         }
 
         int choix = scanner.nextInt();
-        scanner.nextLine(); // Pour consommer le retour à la ligne
+        scanner.nextLine();
 
         if (choix < 1 || choix > cupcakesDuJour.size()) {
             System.out.println("Choix invalide");
@@ -168,14 +165,14 @@ public class CupcakeFactory {
         }
 
         int choixBase = scanner.nextInt();
-        scanner.nextLine(); // Pour consomer le retour à la ligne
+        scanner.nextLine();
 
         if (choixBase < 1 || choixBase > bases.size()) {
             System.out.println("Choix invalide");
             return;
         }
 
-
+        // Choisir une crème
         List<Ingredient> cremes = menu.getCremesDisponibles();
         System.out.println("Choisissez une crème (1-" + cremes.size() + "):");
         for (int i = 0; i < cremes.size(); i++) {
@@ -192,7 +189,6 @@ public class CupcakeFactory {
 
         Cupcake cupcake = new Cupcake(bases.get(choixBase - 1), cremes.get(choixCreme - 1));
 
-
         List<Ingredient> toppings = menu.getToppingsDisponibles();
         boolean continuerToppings = true;
 
@@ -208,6 +204,7 @@ public class CupcakeFactory {
 
                 int choixTopping = scanner.nextInt();
                 scanner.nextLine();
+
 
                 if (choixTopping < 1 || choixTopping > toppings.size()) {
                     System.out.println("Choix invalide");
