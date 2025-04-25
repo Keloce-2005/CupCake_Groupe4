@@ -1,10 +1,9 @@
 import org.example.*;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.List;
-
 import static org.junit.Assert.*;
+
 
 public class CupcakeFactoryTest {
 
@@ -17,7 +16,7 @@ public class CupcakeFactoryTest {
         menu = cupcakeFactory.getMenu();
     }
 
-    // Excercice 1: Tests sur le menu
+    /* Excercice 1 : Test sur le menu */
 
     @Test
     public void testMenuContientCupcakesDuJour() {
@@ -31,7 +30,7 @@ public class CupcakeFactoryTest {
         List<Ingredient> ingredients = menu.getIngredientsDisponibles();
         assertFalse("Le menu doit contenir des ingredients", ingredients.isEmpty());
 
-        // Vérifier qu'il y a des bases, des crèmes et des toppings
+
         assertFalse("Le menu doit contenir des bases", menu.getBasesDisponibles().isEmpty());
         assertFalse("Le menu doit contenir des crèmes", menu.getCremesDisponibles().isEmpty());
         assertFalse("Le menu doit contenir des toppings", menu.getToppingsDisponibles().isEmpty());
@@ -39,41 +38,40 @@ public class CupcakeFactoryTest {
 
     @Test
     public void testIngredientEpuiseDisparaitDuMenu() {
-        // Récupérer un ingredient et épuiser son stock
+
         Ingredient ingredient = menu.getIngredientsDisponibles().get(0);
         int stock = ingredient.getStock();
 
-        // Épuiser le stock
+
         for (int i = 0; i < stock; i++) {
             ingredient.diminuerStock();
         }
 
-        // Vérifier que l'ingredient n'est plus disponible
-        assertFalse("L'ingredient épuisé ne doit plus être disponible", ingredient.estDisponible());
-        assertFalse("L'ingredient épuisé ne doit plus apparaître dans le menu",
+
+        assertFalse("l'ingredient epuise ne doit plus etre disponible", ingredient.estDisponible());
+        assertFalse("l'ingredient epuise ne doit plus apparaitre dans le menu",
                 menu.getIngredientsDisponibles().contains(ingredient));
     }
 
     @Test
     public void testCupcakeDuJourEpuiseDisparaitDuMenu() {
-        // Récupérer un cupcake du jour
+
         Cupcake cupcakeDuJour = menu.getCupcakesDuJourDisponibles().get(0);
         int stock = cupcakeDuJour.getStockCupcakeDuJour();
 
-        // Créer une commande et épuiser le stock
+
         Commande commande = cupcakeFactory.creerNouvelleCommande();
         for (int i = 0; i < stock; i++) {
             commande.ajouterCupcake(cupcakeDuJour);
         }
 
-        // Vérifier que le cupcake n'est plus disponible
         assertFalse("Le cupcake du jour épuisé ne doit plus apparaître dans le menu",
                 menu.getCupcakesDuJourDisponibles().contains(cupcakeDuJour));
     }
 
     @Test
     public void testPlusDeBaseOuCreme() {
-        // Épuiser toutes les bases
+
         List<Ingredient> bases = menu.getBasesDisponibles();
         for (Ingredient base : bases) {
             while (base.estDisponible()) {
@@ -81,7 +79,7 @@ public class CupcakeFactoryTest {
             }
         }
 
-        // Vérifier qu'on ne peut plus faire de cupcakes
+
         assertFalse("On ne doit plus pouvoir faire de cupcakes sans base", menu.peutFaireCupcakes());
 
         // Réinitialiser et épuiser toutes les crèmes
@@ -93,11 +91,11 @@ public class CupcakeFactoryTest {
             }
         }
 
-        // Vérifier qu'on ne peut plus faire de cupcakes
-        assertFalse("On ne doit plus pouvoir faire de cupcakes sans crème", menu.peutFaireCupcakes());
+
+        assertFalse("on ne doit plus pouvoir faire de cupcakes sans creme", menu.peutFaireCupcakes());
     }
 
-    // Excercice 2: Tests sur les commandes
+    /* Excercice 2: Tests sur les commandes */
 
     @Test
     public void testCreationCupcake() {
@@ -105,7 +103,7 @@ public class CupcakeFactoryTest {
         Ingredient creme = menu.getCremesDisponibles().get(0);
 
         Cupcake cupcake = new Cupcake(base, creme);
-        assertNotNull("On doit pouvoir créer un cupcake avec une base et une crème", cupcake);
+        assertNotNull("On doit pouvoir cree un cupcake avec une base et une crème", cupcake);
         assertEquals("Le cupcake doit avoir la bonne base", base, cupcake.getBase());
         assertEquals("Le cupcake doit avoir la bonne crème", creme, cupcake.getCreme());
     }
@@ -145,31 +143,31 @@ public class CupcakeFactoryTest {
         cupcake.ajouterTopping(topping1);
         cupcake.ajouterTopping(topping2);
 
-        // Le topping le moins cher doit être offert (vermicelles à 0.5€)
+
         double prixAttendu = base.getPrix() + creme.getPrix() + topping1.getPrix();
         assertEquals("Le prix doit comprendre le topping le plus cher seulement", prixAttendu, cupcake.calculerPrix(), 0.01);
     }
 
     @Test
     public void testPrixCupcakeDuJour() {
-        // Récupérer un cupcake du jour
+
         Cupcake cupcakeDuJour = menu.getCupcakesDuJourDisponibles().get(0);
 
-        // Calculer le prix normal sans la réduction
+
         double prixNormal = cupcakeDuJour.getBase().getPrix() + cupcakeDuJour.getCreme().getPrix();
         if (!cupcakeDuJour.getToppings().isEmpty()) {
-            // Si il y a un seul topping, on l'ajoute
+
             if (cupcakeDuJour.getToppings().size() == 1) {
                 prixNormal += cupcakeDuJour.getToppings().get(0).getPrix();
             } else {
-                // Si deux toppings, trouver le plus cher
+
                 Ingredient topping1 = cupcakeDuJour.getToppings().get(0);
                 Ingredient topping2 = cupcakeDuJour.getToppings().get(1);
                 prixNormal += Math.max(topping1.getPrix(), topping2.getPrix());
             }
         }
 
-        // Prix avec 60% de réduction
+
         double prixReduit = prixNormal * 0.6;
 
         assertEquals("Le prix du cupcake du jour doit être à 60% du prix normal",
@@ -180,14 +178,14 @@ public class CupcakeFactoryTest {
     public void testCommandeSixCupcakes() {
         Commande commande = cupcakeFactory.creerNouvelleCommande();
 
-        // Créer 6 cupcakes identiques pour simplifier
+
         Ingredient base = menu.getBasesDisponibles().get(0);
         Ingredient creme = menu.getCremesDisponibles().get(0);
 
         double prixUnitaire = base.getPrix() + creme.getPrix();
         double prixTotal = prixUnitaire * 5; // 5 payant, 1 gratuit
 
-        // Ajouter 6 cupcakes
+
         for (int i = 0; i < 6; i++) {
             Cupcake cupcake = new Cupcake(base, creme);
             commande.ajouterCupcake(cupcake);
@@ -201,7 +199,7 @@ public class CupcakeFactoryTest {
     public void testCommandeSixCupcakesAvecUnDuJour() {
         Commande commande = cupcakeFactory.creerNouvelleCommande();
 
-        // Ajouter 5 cupcakes normaux
+
         Ingredient base = menu.getBasesDisponibles().get(0);
         Ingredient creme = menu.getCremesDisponibles().get(0);
 
@@ -213,11 +211,11 @@ public class CupcakeFactoryTest {
             commande.ajouterCupcake(cupcake);
         }
 
-        // Ajouter un cupcake du jour
+
         Cupcake cupcakeDuJour = menu.getCupcakesDuJourDisponibles().get(0);
         commande.ajouterCupcake(cupcakeDuJour);
 
-        // Le prix total doit inclure les 5 cupcakes normaux + le cupcake du jour (la promotion 5+1 ne s'applique pas)
+
         double prixTotal = prixCupcakesNormaux + cupcakeDuJour.calculerPrix();
 
         assertEquals("Pour 6 cupcakes dont un du jour, tous doivent être facturés",
@@ -228,11 +226,11 @@ public class CupcakeFactoryTest {
     public void testCommandeSeptCupcakesAvecUnDuJour() {
         Commande commande = cupcakeFactory.creerNouvelleCommande();
 
-        // Ajouter 6 cupcakes normaux de prix différents
+
         Ingredient[] bases = menu.getBasesDisponibles().toArray(new Ingredient[0]);
         Ingredient[] cremes = menu.getCremesDisponibles().toArray(new Ingredient[0]);
 
-        // On crée 6 cupcakes avec des configurations différentes pour avoir des prix variés
+
         double prixTotal = 0;
         double prixMoinsCher = Double.MAX_VALUE;
 
@@ -250,15 +248,15 @@ public class CupcakeFactoryTest {
             commande.ajouterCupcake(cupcake);
         }
 
-        // Soustraire le prix du cupcake le moins cher (qui sera gratuit)
+
         prixTotal -= prixMoinsCher;
 
-        // Ajouter un cupcake du jour
+
         Cupcake cupcakeDuJour = menu.getCupcakesDuJourDisponibles().get(0);
         commande.ajouterCupcake(cupcakeDuJour);
         prixTotal += cupcakeDuJour.calculerPrix();
 
-        assertEquals("Pour 7 cupcakes dont un du jour, le moins cher des 6 normaux doit être gratuit",
+        assertEquals("pour 7 cupcakes dont un du jour, le moins cher des 6 normaux doit etre gratuit",
                 prixTotal, commande.calculerTotal(), 0.01);
     }
 }
