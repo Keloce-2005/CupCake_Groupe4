@@ -1,11 +1,12 @@
-package org.example;
-
-import static org.junit.Assert.*;
+import org.example.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.List;
 
-public class CupcakeFactoryTest {2
+import static org.junit.Assert.*;
+
+public class CupcakeFactoryTest {
 
     private CupcakeFactory cupcakeFactory;
     private Menu menu;
