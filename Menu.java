@@ -56,7 +56,7 @@ public class Menu {
     }
 
     public void afficherMenu() {
-        System.out.println("===== MENU CUPCAKE FACTORY =====");
+        System.out.println("MENU CUPCAKE FACTORY");
 
 
         List<Cupcake> cupcakesDuJourDispos = getCupcakesDuJourDisponibles();
