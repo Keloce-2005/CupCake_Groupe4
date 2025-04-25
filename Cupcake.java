@@ -10,20 +10,20 @@ public class Cupcake {
     private boolean estCupcakeDuJour;
     private int stockCupcakeDuJour;
 
-    public Cupcake(Ingredient base, Ingredient creme) {
+     Cupcake(Ingredient base, Ingredient creme) {
         this.base = base;
         this.creme = creme;
         this.toppings = new ArrayList<>();
         this.estCupcakeDuJour = false;
     }
 
-    public Cupcake(Ingredient base, Ingredient creme, boolean estCupcakeDuJour, int stock) {
+     Cupcake(Ingredient base, Ingredient creme, boolean estCupcakeDuJour, int stock) {
         this(base, creme);
         this.estCupcakeDuJour = estCupcakeDuJour;
         this.stockCupcakeDuJour = stock;
     }
 
-    public boolean ajouterTopping(Ingredient topping) {
+     boolean ajouterTopping(Ingredient topping) {
         if (toppings.size() >= 2) {
             return false;
         }
@@ -31,11 +31,11 @@ public class Cupcake {
         return true;
     }
 
-    public double calculerPrix() {
+     double calculerPrix() {
         double prixTotal = base.getPrix() + creme.getPrix();
 
         if (!toppings.isEmpty()) {
-            // Trouver le topping le moins cher
+
             Ingredient toppingMoinsCher = toppings.get(0);
             for (Ingredient topping : toppings) {
                 if (topping.getPrix() < toppingMoinsCher.getPrix()) {
@@ -43,7 +43,7 @@ public class Cupcake {
                 }
             }
 
-            // Ajouter le prix des toppings (sauf le moins cher)
+
             for (Ingredient topping : toppings) {
                 if (topping != toppingMoinsCher || toppings.size() == 1) {
                     prixTotal += topping.getPrix();
@@ -52,13 +52,13 @@ public class Cupcake {
         }
 
         if (estCupcakeDuJour) {
-            prixTotal = prixTotal * 0.6; // 60% du prix normal
+            prixTotal = prixTotal * 0.6;
         }
 
         return prixTotal;
     }
 
-    public boolean estDisponible() {
+     boolean estDisponible() {
         if (estCupcakeDuJour) {
             return stockCupcakeDuJour > 0 && base.estDisponible() && creme.estDisponible() &&
                     toppings.stream().allMatch(Ingredient::estDisponible);
@@ -68,7 +68,7 @@ public class Cupcake {
         }
     }
 
-    public void preparerCupcake() {
+    void preparerCupcake() {
         if (estCupcakeDuJour) {
             stockCupcakeDuJour--;
         } else {
@@ -80,17 +80,17 @@ public class Cupcake {
         }
     }
 
-    public boolean estCupcakeDuJour() {
+     boolean estCupcakeDuJour() {
         return estCupcakeDuJour;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Cupcake: ").append(base.getNom()).append(" avec crème ").append(creme.getNom());
+        sb.append("Cupcake:").append(base.getNom()).append(" avec creme ").append(creme.getNom());
 
         if (!toppings.isEmpty()) {
-            sb.append(", toppings: ");
+            sb.append(", topings: ");
             for (int i = 0; i < toppings.size(); i++) {
                 sb.append(toppings.get(i).getNom());
                 if (i < toppings.size() - 1) {
@@ -100,25 +100,25 @@ public class Cupcake {
         }
 
         if (estCupcakeDuJour) {
-            sb.append(" (Cupcake du jour)");
+            sb.append("(Cupcake du jour)");
         }
 
         return sb.toString();
     }
 
-    public Ingredient getBase() {
+    Ingredient getBase() {
         return base;
     }
 
-    public Ingredient getCreme() {
+     Ingredient getCreme() {
         return creme;
     }
 
-    public List<Ingredient> getToppings() {
+     List<Ingredient> getToppings() {
         return toppings;
     }
 
-    public int getStockCupcakeDuJour() {
+     int getStockCupcakeDuJour() {
         return stockCupcakeDuJour;
     }
 }
